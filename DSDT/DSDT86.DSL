@@ -4401,6 +4401,48 @@ DefinitionBlock ("DSDT86¸±±¾.aml", "DSDT", 2, "DELL", "WN09", 0x00000022)
                 PR3M,   32
             }
             Name (XRST, Zero)
+            Method (_DSM, 4, NotSerialized)  // _DSM: Device-Specific Method
+            {
+                Store (Package (0x13)
+                    {
+                        "device-id", 
+                        Buffer (0x04)
+                        {
+                             0x31, 0x1E, 0x00, 0x00
+                        }, 
+                        "built-in", 
+                        Buffer (One)
+                        {
+                             0x00
+                        }, 
+                        "AAPL,clock-id", 
+                        Buffer (One)
+                        {
+                             0x00
+                        }, 
+                        "device_type", 
+                        Buffer (0x05)
+                        {
+                            "XHC"
+                        }, 
+                        "AAPL,current-available", 
+                        0x09C4, 
+                        "AAPL,current-extra", 
+                        0x00018E70, 
+                        "AAPL,current-extra-in-sleep", 
+                        0x00018E70, 
+                        "AAPL,current-in-sleep", 
+                        0x03E8, 
+                        "AAPL,max-port-current-in-sleep", 
+                        0x09C4, 
+                        Buffer (One)
+                        {
+                             0x00
+                        }
+                    }, Local0)
+                DTGP (Arg0, Arg1, Arg2, Arg3, RefOf (Local0))
+                Return (Local0)
+            }
             Method (CUID, 1, Serialized)
             {
                 If (LEqual (Arg0, Buffer (0x10)
